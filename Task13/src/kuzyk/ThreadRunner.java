@@ -6,19 +6,21 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class ThreadRunner implements Runnable {
-    private Integer min;
-    private AtomicInteger minInt;
-    private Integer max;
-    private int count;
+
+public class ThreadRunner extends Thread {
+    private static AtomicInteger minInt = new AtomicInteger(0);
+    private static Integer max = 0;
+    private static int count = 0;
+
     public Scanner scanner = new Scanner(System.in);
 
-    List<Integer> newList = Collections.synchronizedList(new ArrayList<Integer>());
+    private static List<Integer> newList = Collections.synchronizedList(new ArrayList<>());
 
-    @Override
     public void run() {
         int number;
+
         while ((number = minInt.getAndIncrement()) <= max) {
+            System.out.println(Thread.currentThread().getName());
             if (checkSimple(number)) {
                 newList.add(number);
             }
@@ -35,28 +37,33 @@ public class ThreadRunner implements Runnable {
         return result;
     }
 
-    public Integer minimumRangeInput() {
+    public void minimumRangeInput() {
         System.out.println("Min");
-        min = scanner.nextInt();
-        minInt = new AtomicInteger(min);
-        return min;
+        Integer min = scanner.nextInt();
+        this.minInt = new AtomicInteger(min);
     }
 
-    public Integer maximumRangeInput() {
+    public void maximumRangeInput() {
         System.out.println("Max");
-        max = scanner.nextInt();
-        return max;
+        this.max = scanner.nextInt();
+
     }
 
-    public Integer count() {
+    public void count() {
         System.out.println("Count");
-        count = scanner.nextInt();
-        return count;
+        this.count = scanner.nextInt();
     }
 
-    public void creatingThreadPool() {
-        for (int i = 1; i <= count; i++) {
-            run();
+    public void creatingThreadPool() throws InterruptedException {
+        Thread[] threads = new Thread[count];
+
+        // threads[x].join();
+        for (int x = 0; x < threads.length; x++) {
+            (threads[x] = new ThreadRunner()).start();
+            //(threads[x] = new Thread(new ThreadRunner())).start();
+        }
+        for (Thread thread : threads) {
+            thread.join();
         }
     }
 
