@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Calculate</title>
+        <meta charset="UTF-8">
+        <meta name ="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+
+    <body>
+        <center>
+            <h1>Calculate</h1>
+
+            <form action="Calculate" method="post">
+                Operand 1: <input type="text" name="n1"><br>
+                Operand 2: <input type="text" name="n2"><br>
+                <br> Enter operation <br>
+                <b>
+                    <input type="radio" name="type" value="+" /> +
+                    <input type="radio" name="type" value="-" /> -
+                    <input type="radio" name="type" value="*" /> *
+                    <input type="radio" name="type" value="/" /> /
+                </b>
+                <br><br>
+                <input type="submit" value="Gjør utregning">
+                <p></p>
+                <script>
+                        var GET = {};
+                        var param = "0";
+                        var query = window.location.search.substring(1).split("&");
+                        for (var i = 0, max = query.length; i < max; i++){
+                            var param = query[i].split("=");
+                            GET[decodeURIComponent(param[0])] = decodeURIComponent(param[1] || "");
+                    }
+                        if(GET.result){
+                             document.write("Result = " + GET.result);
+                        }
+
+                </script>
+
+            </form>
+        </center>
+    </body>
+</html>
